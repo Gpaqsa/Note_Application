@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 import NoteCardLists from "./components/NoteCardLists";
@@ -51,6 +51,20 @@ function App() {
     const newNotes = notes.filter((note) => note.id !== id);
     setNotes(newNotes);
   };
+
+  // LocalStorage
+  useEffect(() => {
+    const savedNotes = JSON.parse(localStorage.getItem("notes-app-data"));
+
+    if (savedNotes) {
+      setNotes(savedNotes);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("notes-app-data", JSON.stringify(notes));
+  }, [notes]);
+
   return (
     <div className="container">
       <Search handleSearchNote={setSearchText} />
